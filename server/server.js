@@ -2,8 +2,43 @@
 
 var loopback = require('loopback');
 var boot = require('loopback-boot');
+var jwt = require('express-jwt');
+var jwks = require('jwks-rsa');
 
 var app = module.exports = loopback();
+
+var authCheck = jwt({
+  secret: jwks.expressJwtSecret({
+        cache: true,
+        rateLimit: true,
+        jwksRequestsPerMinute: 5,
+        // YOUR-AUTH0-DOMAIN name e.g https://prosper.auth0.com
+        jwksUri: "https://bec-authen-demo.auth0.com/.well-known/jwks.json"
+    }),
+    // This is the identifier we set when we created the API
+    audience: '{http://192.168.1.122:3000/api}',
+	//audience: 'https://bec-authen-demo.auth0.com/api/v2/',
+    issuer: 'https://bec-authen-demo.auth0.com/',
+    algorithms: ['RS256']
+});
+
+//app.use(authCheck);
+
+//app.get('authorized', function (req, res) {
+//    res.send("Secured Resource");
+//});
+
+//app.use('/api/users', function(req, res, next) {
+//    res.json("It has valid token", req.user);
+//});
+
+app.use(function (err, req, res, next) {
+    if (err.name === 'UnauthorizedError') {
+        res.status(401).send('Invalid token, or no token supplied!');
+    } else {
+        res.status(401).send(err);
+    }
+});
 
 app.start = function() {
   // start the web server
