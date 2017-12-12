@@ -10,5 +10,5 @@
 
 # III. Test
 
-   Access to API Expoler at: **_http://localhost:3000/explorer/_**
-   Request to Users APIs: **_http://localhost:3000/api/users_**
+   *Access to API Expoler at: **_https://localhost:3000/explorer/_**
+   *Request to Users APIs: **_https://localhost:3000/api/users_**
