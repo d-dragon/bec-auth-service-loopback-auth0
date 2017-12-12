@@ -1,11 +1,14 @@
 # bec-identity-service
 
-I. Preparation.
-$ npm install
+# I. Preparation.
 
-II. Run
-$ node .
+   *$ npm install*
 
-III. Test
-Access to API Expoler at: http://localhost:3000/explorer/
-Request to Users APIs: http://localhost:3000/api/users
+# II. Run
+
+   *$ node .*
+
+# III. Test
+
+   Access to API Expoler at: **_http://localhost:3000/explorer/_**
+   Request to Users APIs: **_http://localhost:3000/api/users_**
