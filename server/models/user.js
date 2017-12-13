@@ -6,6 +6,7 @@ var connection = 'Username-Password-Authentication';
 var audience = 'http://192.168.1.122:3000/api';
 var signin_url = 'https://bec-authen-demo.auth0.com/oauth/token';
 var signup_url = 'https://bec-authen-demo.auth0.com/dbconnections/signup';
+var logout_url = 'https://bec-authen-demo.auth0.com/v2/logout';
 
 module.exports = function(User) {
 	User.remoteMethod('login', {
@@ -26,6 +27,11 @@ module.exports = function(User) {
 		{arg: 'role', type: 'string', required: true}
 		],
 		http: {path: '/signup', verb: 'post'},
+		returns: {arg: 'result', type: 'Object'}
+	});
+
+	User.remoteMethod('logout', {
+		http: {path: '/logout', verb: 'post'},
 		returns: {arg: 'result', type: 'Object'}
 	});
 
@@ -57,6 +63,7 @@ module.exports = function(User) {
 		});
 	};
 
+	// Signup endpoint logic
 	User.signup = function(email,
 							password,
 							fist_name,
@@ -84,6 +91,30 @@ module.exports = function(User) {
 
 		};
 		
+		request(options, function(error, response, body) {
+			if (error) throw new Error(error);
+			console.log(body);
+			callback(null, body);
+		});
+	};
+	
+	// Logout endpoinst logic
+	User.logout = function(callback)	{
+		console.log('calling Auth0 logout');
+
+		var request = require("request");
+
+		var options = { method: 'GET',
+						url: logout_url,
+						headers: { 'content-type': 'application/json'},
+						body:
+						{
+							client_id: client_id,
+							//returnTo: 'http://192.168.1.122:3000/explorer'
+							//returnTo: 'http://192.168.1.122:3001/api/users'
+						},
+						json: true
+		};
 		request(options, function(error, response, body) {
 			if (error) throw new Error(error);
 			console.log(body);
